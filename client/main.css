@@ -1,0 +1,8 @@
+/* CSS declarations go here */
+
+        .bkg1 {
+            background-image: url("http://sistemasycomputacion.mx/moodle/pluginfile.php/34790/mod_resource/content/1/xfdsfmwdfds.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 70px;
+        }
