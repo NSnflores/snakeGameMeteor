@@ -28,7 +28,7 @@ app.controller('PartiesCont', ['$scope', function($scope) {
                 }
                 scores.push({
                     place: i,
-                    user: games[i].user,
+                    user: games[i].user.substring(0,10),
                     score: games[i].score
                 });
             }
