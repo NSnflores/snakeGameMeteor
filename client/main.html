@@ -1,53 +1,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Ejemplo de Materialize</title>
-
     <!-- Compiled and minified CSS --> 
-    <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
-
-
-
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-
 </head>
 
-<body ng-app="preexamen" ng-strict-di="" ng-controller="PartiesCont" >
-
-
+<body ng-app="preexamen" ng-strict-di="" ng-controller="PartiesCont" bgcolor="#212121 ">
     <header class="bkg1 valign-wrapper">
         <h2 class="container white-text valign">
             Jueguele mi compa
         </h2>
     </header>
     <div class="row">
-        <div class="row grey darken-2">
-            <input class="white-text" ng-model="user" type="text" placeholder="User" style="margin-left:10px;"/>
-            <a class="btn-flat white-text grey darken-2" ng-click="jugar()" >Login</a>
+        <div class="col l2 grey darken-4">
+            <input class="white-text" ng-model="user" type="text" placeholder="User" />
+            <a class="btn-flat white-text center-align green darken-3" ng-click="jugar()" >Start</a>
         </div>
-        <div class="col l1">
+        <div class="col green darken-3 white-text l2">
             <table class="bordered highlight centered">
-                <h5>Highscores</h5>
+                <h5 style="margin-left:25px;">Highscores</h5>
                 <thead>
                     <tr>
+                        <th class="yellow-text text-lighten-2">Place</th>
                         <th>User</th>
                         <th>Score</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="partida in partidas">
+                        <td class="yellow-text text-lighten-2">#{{partida.place}}</td>
                         <td>{{partida.user}}</td>
-                        <td>{{partida.score}}</td>
+                        <td>{{partida.score}} Points</td>
                     </tr>
             </table>
         </div>
-        <div class="col l11">
+        <div class="col white l8">
             <section class="section container">
                 <canvas id="gameCanvas" width="600" height="600" tabindex="1"></canvas>
             </section>  
         </div>
-
-
     </div>
     <footer class="grey darken-4">
         <div class="row">
