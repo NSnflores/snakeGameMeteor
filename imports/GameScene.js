@@ -1,6 +1,7 @@
 import {Keys} from '../imports/Keys';
 import { Mongo } from 'meteor/mongo';
-import {Partidas} from '../imports/collections/partidas';
+import {Partidas} from '../imports/collections/partidas.js';
+import {Users} from '../imports/collections/partidas.js';
 
 let timeBetweenMovements = 0.07;
 let distanceBetweenPoints = 40;
@@ -33,12 +34,16 @@ let normRot = function(x) {
   return Math.round((x+90) / 90) * 90 - 90;
 }
 
+
 export const GameScene = {
   scene: function(){
     //load resources
     cc.LoaderScene.preload([], function () {
       var MyScene = cc.Scene.extend({
         onEnter:function () {
+          
+          var Username = Users.find().fetch().pop().user;
+            
           this._super();
             
           let Directions = {
@@ -93,6 +98,7 @@ export const GameScene = {
           var endGame = function() {
             var score1 = sprites.length;
             Partidas.insert({
+              user: Username,
               score: score1
             });
 

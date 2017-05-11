@@ -22,18 +22,32 @@
     </header>
     <div class="row">
         <div class="row grey darken-2">
-                <a class="btn-flat white-text grey darken-2" ng-click="jugar()">Inicio</a>
+            <input class="white-text" ng-model="user" type="text" placeholder="User" style="margin-left:10px;"/>
+            <a class="btn-flat white-text grey darken-2" ng-click="jugar()" >Login</a>
         </div>
-        
-        
+        <div class="col l1">
+            <table class="bordered highlight centered">
+                <h5>Highscores</h5>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="partida in partidas">
+                        <td>{{partida.user}}</td>
+                        <td>{{partida.score}}</td>
+                    </tr>
+            </table>
+        </div>
+        <div class="col l11">
+            <section class="section container">
+                <canvas id="gameCanvas" width="600" height="600" tabindex="1"></canvas>
+            </section>  
+        </div>
 
-                            <section class="section container">
-                                <canvas id="gameCanvas" width="600" height="600" tabindex="1"></canvas>
-                            </section>  
 
-
-        
-        
     </div>
     <footer class="grey darken-4">
         <div class="row">
