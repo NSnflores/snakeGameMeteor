@@ -9,17 +9,27 @@ let headPath = "head.png";
 let bodyPath = "body.png";
 let applePath = "apple.png";
 let gridPath = "grid2.png";
+let musicPath = "music.ogg";
+let eatAppleSoundPath = "pep.ogg";
 
 let squaresTotal = 225;
 let squaresWidth = 15;
 let squaresHeight = 15;
+
+export const CocosScope = {
+    value: null
+};
+
+export const Audio = {
+    on: true
+}
 
 export const User = {
     name: ""
 }
 
 let decomposePosition = function(x, y) {
-    return Math.floor(Math.floor(((y-10))*(squaresWidth) / distanceBetweenPoints) + (x-10) / distanceBetweenPoints);
+    return Math.floor(Math.floor(((y-20))*(squaresWidth) / distanceBetweenPoints) + (x-20) / distanceBetweenPoints);
 }
 
 let composePosition = function(n) {
@@ -46,6 +56,14 @@ export const GameScene = {
                     var Username = User.name;
                     this._super();
 
+                    cc.audioEngine.playMusic(musicPath, true);
+                    cc.audioEngine.setMusicVolume(0.5);
+                    
+                    let updateScore = function(){
+                        CocosScope.value.$apply();
+                        CocosScope.value.score = "Score: " + sprites.length;
+                    }
+
                     let Directions = {
                         R: cc.p(distanceBetweenPoints, 0),
                         U: cc.p(0,distanceBetweenPoints),
@@ -54,10 +72,23 @@ export const GameScene = {
                         Z: cc.p(0,0)
                     };
 
+                    let setAudio = function() {
+
+                        if(Audio.on){
+                            cc.audioEngine.setMusicVolume(0.7);
+                            cc.audioEngine.setEffectsVolume(1.0);
+                        }
+                        else {
+                            cc.audioEngine.setMusicVolume(0);
+                            cc.audioEngine.setEffectsVolume(0);
+                        }
+                    }
+                    setAudio();
+
                     var directionQueue = [];
                     var size = cc.director.getWinSize();
                     var sprites = [];
-                    var positions = [];
+                    var positionQueue = [];
                     var apple = null;
                     var label = null;
                     var directionQueue = [];
@@ -70,10 +101,12 @@ export const GameScene = {
                         sprites.push(sprite);
                         sprite.setGlobalZOrder(3);
                         directionQueue.push(cc.p(0,0));
+                        positionQueue.push(positionQueue[positionQueue.length-1]);
                         context.addChild(sprite);
                     };
 
                     let createApple = function(context) {
+                        
                         if(apple != null){
                             apple.runAction(cc.removeSelf(true));
                         }
@@ -114,13 +147,20 @@ export const GameScene = {
                             sprites[i].runAction(sequence);
                         }
                         label.setString("game over");
+                        cc.audioEngine.end();
                     };
 
                     //update fuction to move the snake
                     var reRunActions = function() {
+                        //schedule(reRunActions, timeBetweenMovements + 0.02);
+                        setAudio();
+                        for(var i = positionQueue.length-1; i>0; i--){
+                            positionQueue[i] = positionQueue[i-1];
+                        }
+                        positionQueue[0] = decomposePosition(norm(sprites[0].getPosition().x),norm(sprites[0 ].getPosition().y));
                         for(var i = 0; i < sprites.length; i++){
                             sprites[i].stopAllActions();
-                            sprites[i].setPosition(norm(sprites[i].getPosition().x),norm(sprites[i].getPosition().y));
+                            sprites[i].setPosition(composePosition(positionQueue[i]).x, composePosition(positionQueue[i]).y);
                             var pi = sprites[i].getPosition();
                             var p0 = sprites[0].getPosition();
                             ////////////////////////////////////GAME OVER
@@ -137,6 +177,9 @@ export const GameScene = {
                            apple.getPosition().y === sprites[0].getPosition().y){
                             createApple(this);
                             createSnakeBody(this);
+                            
+                            updateScore();
+                            cc.audioEngine.playEffect(eatAppleSoundPath, false);
                         }
 
                         //movements out of canvas
@@ -238,9 +281,11 @@ export const GameScene = {
                     var sprt = cc.Sprite.create(headPath);
                     sprt.setZOrder(2);
                     sprites.push(sprt);
-                    sprt.setPosition(220, 220);
+                    var sprtInitPos = composePosition(127);
+                    sprt.setPosition(sprtInitPos.x,sprtInitPos.y);
                     this.addChild(sprt, 0);
                     directionQueue.push(Directions.Z);
+                    positionQueue.push(127);
 
                     //schedule update ActionScaleFrame
                     this.schedule(reRunActions, timeBetweenMovements + 0.02);
@@ -251,24 +296,32 @@ export const GameScene = {
                             onKeyPressed: function(key, event){
                                 switch(key) {
                                     case Keys.L:
-                                        if(lastDirection !== Directions.R)
+                                        if(lastDirection !== Directions.R){
                                             directionQueue[0] = Directions.L;
+                                            //reRunActions();
+                                        }
                                         break;
                                     case Keys.U:
-                                        if(lastDirection !== Directions.D)
+                                        if(lastDirection !== Directions.D){
                                             directionQueue[0] = Directions.U;
+                                            //reRunActions();
+                                        }
                                         break;
                                     case Keys.R:
-                                        if(lastDirection !== Directions.L)
+                                        if(lastDirection !== Directions.L){
                                             directionQueue[0] = Directions.R;
+                                            //reRunActions();
+                                        }
                                         break;
                                     case Keys.D:
-                                        if(lastDirection !== Directions.U)
+                                        if(lastDirection !== Directions.U){
                                             directionQueue[0] = Directions.D;
+                                        }
                                         break;
                                 }
                             }
                         }, this);
+                    updateScore();
                 }
             });
             cc.director.runScene(new MyScene());

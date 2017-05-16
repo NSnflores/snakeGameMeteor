@@ -1,6 +1,6 @@
 <head>
     <meta charset="UTF-8">
-    <title>Ejemplo de Materialize</title>
+    <title>Snake game</title>
     <!-- Compiled and minified CSS --> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -8,15 +8,32 @@
 
 <body ng-app="preexamen" ng-strict-di="" ng-controller="PartiesCont" bgcolor="#212121 ">
     <header class="bkg1 valign-wrapper">
-        <h2 class="container white-text valign">
+
+        <h5 class="container white-text" align="center">
             Jueguele mi compa
-        </h2>
+        </h5>
+
     </header>
     <div class="row">
         <div class="col l2 grey darken-4">
             <input class="white-text" ng-model="user" type="text" placeholder="User" />
-            <a class="btn-flat white-text center-align cyan darken-1" ng-click="jugar()" >Start</a>
+            <div class="col">
+                <a class="btn-flat white-text center-align cyan darken-1" ng-click="jugar()" >Start</a>
+            </div>
+            <div class="col">
+                <i id="audioicon" class="small cyan lighten-1 white-text material-icons" style="margin-top:3px; cursor: pointer;" ng-click="audioEvent()">volume_up</i>
+            </div>
         </div>
+
+        <div class="col white l8">
+            <section class="section container">
+                <div class="row">
+                    <h5 class="black-text" align="center">{{score}}</h5>
+                </div>
+                <canvas id="gameCanvas" width="600" height="600" tabindex="1"></canvas>
+            </section>  
+        </div>
+
         <div class="col cyan darken-1 white-text l2">
             <table class="bordered highlight centered">
                 <h5 style="margin-left:25px;">Highscores</h5>
@@ -35,56 +52,6 @@
                     </tr>
             </table>
         </div>
-        <div class="col white l8">
-            <section class="section container">
-                <canvas id="gameCanvas" width="600" height="600" tabindex="1"></canvas>
-            </section>  
-        </div>
     </div>
-    <footer class="grey darken-4">
-        <div class="row">
-            <div class="col m6 l6 s12 valign">
-                <h6 class="container white-text align" center><br><br>Acerca de la empresa</h6>
-                <small>
-                    <p class="container white-text align" center><br>
-                        Prepárense para los problemas, 
-                        y más vale que teman.<br> 
-                        Para proteger al mundo de la devastación. <br> 
-                        Para unir a los pueblos dentro de nuestra nación. <br> 
-                        Para denunciar los males de la verdad y el amor. <br> 
-                        Para extender nuestro reino hasta las estrellas. <br> 
-                        ¡Jessie! <br> 
-                        ¡Jamememes! <br> 
-                        El Equipo Rocket viajando a la velocidad de la luz. <br> 
-                        Ríndanse ahora o prepárense a luchar. <br> 
-                        ¡Meowth! ¡Así es!<br><br></p>
-                </small>
-            </div>
-            <div class="col m4 l4 s12">
-                <div class="container">
-                    <br><br>
-                    <iframe valign width="290" height="200" src="https://www.youtube.com/embed/u1S5KCWrPvk" frameborder="0" allowfullscreen></iframe>
-                    <br><br>
-                </div>
-            </div>
-        </div>
-        <footer class="black">
-            <div class="row">
-                <div class="col m6 l6 s12 valign">
-                    <small>
-                        <p class="container white-text align" center><br>
-                            Todos los derechos reservados<br></p>
-                    </small>
-                </div>
-                <div class="col m4 l4 s12">
-                    <div class="container">
-                        <small>
-                            <p class="container white-text align" center><br>
-                                Intituto Tecnológico de Chihuahua II<br></p>
-                        </small>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </footer>
+
 </body>
