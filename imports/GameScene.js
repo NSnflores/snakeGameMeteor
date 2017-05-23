@@ -2,11 +2,11 @@ import {Keys} from '../imports/Keys';
 import { Mongo } from 'meteor/mongo';
 import {Partidas} from '../imports/collections/partidas.js';
 
-let timeBetweenMovements = 0.07;
+let timeBetweenMovements = 0.06;
 let distanceBetweenPoints = 40;
 
-let headPath = "head.png";
-let bodyPath = "body.png";
+let headPath = "head1.png";
+let bodyPath = "body1.png";
 let applePath = "apple.png";
 let gridPath = "grid2.png";
 let musicPath = "music.ogg";
@@ -146,7 +146,7 @@ export const GameScene = {
                             var sequence = cc.sequence(anim);
                             sprites[i].runAction(sequence);
                         }
-                        label.setString("game over");
+                        label.setString("Game Over");
                         cc.audioEngine.end();
                     };
 
@@ -164,7 +164,7 @@ export const GameScene = {
                             var pi = sprites[i].getPosition();
                             var p0 = sprites[0].getPosition();
                             ////////////////////////////////////GAME OVER
-                            if(pi.x === p0.x && pi.y === p0.y && i != 0){
+                            if(pi.x === p0.x && pi.y === p0.y && i > 2){
                                 endGame();
                                 this.unschedule(reRunActions);
                                 return;
@@ -245,19 +245,19 @@ export const GameScene = {
                             switch(directionQueue[i]){
                                 case Directions.L:
                                     if(sprites[i].getRotation() != 90)
-                                        sprites[i].runAction(cc.rotateTo(0.05,90));
+                                        sprites[i].setRotation(90);
                                     break;
                                 case Directions.R:
                                     if(sprites[i].getRotation() != -90)
-                                        sprites[i].runAction(cc.rotateTo(0.05,-90));
+                                        sprites[i].setRotation(-90);
                                     break;
                                 case Directions.U:
                                     if(sprites[i].getRotation() != 180)
-                                        sprites[i].runAction(cc.rotateTo(0.05,180));
+                                        sprites[i].setRotation(180);
                                     break;
                                 case Directions.D:
                                     if(sprites[i].getRotation() != 0)
-                                        sprites[i].runAction(cc.rotateTo(0.05,0));
+                                        sprites[i].setRotation(0);
                                     break;
                             }
                         }
@@ -288,7 +288,7 @@ export const GameScene = {
                     positionQueue.push(127);
 
                     //schedule update ActionScaleFrame
-                    this.schedule(reRunActions, timeBetweenMovements + 0.02);
+                    this.schedule(reRunActions, timeBetweenMovements+0.01);
                     //set listener for keyboard
                     if (cc.sys.capabilities.hasOwnProperty('keyboard'))
                         cc.eventManager.addListener({
@@ -316,6 +316,7 @@ export const GameScene = {
                                     case Keys.D:
                                         if(lastDirection !== Directions.U){
                                             directionQueue[0] = Directions.D;
+                                            //reRunActions();
                                         }
                                         break;
                                 }
