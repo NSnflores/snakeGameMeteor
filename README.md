@@ -1,4 +1,4 @@
-# Snake Game (Clone)
+# Snake Game 
 
 
 ## Requirements
